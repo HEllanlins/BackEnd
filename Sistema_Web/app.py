@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello(): 
-    return render_template('Pagina.html')
+    user = 'Hellan Lins'
+    return render_template('Pagina.html', user = user)
 
 @app.route('/sobre')
 def sobre():
