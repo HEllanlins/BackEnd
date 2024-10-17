@@ -1,14 +1,14 @@
-from flask import Flask
+from flask import Flask , render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello(): 
-    return 'Página Inicial '
+    return render_template('Pagina.html')
 
 @app.route('/sobre')
 def sobre():
-    return 'Página sobre'
+    return render_template('Sobre.html')
 
 if __name__ == '__main__':
     app.run(port=8000)
