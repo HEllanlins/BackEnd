@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bem-vindo, {{ current_user.nome }}!</h2>
+    <h2>Seus Eventos</h2>
+    <ul class="list-group">
+        {% for evento in eventos %}
+            <li class="list-group-item">
+                <strong>{{ evento.titulo }}</strong> - {{ evento.data_evento.strftime('%d/%m/%Y') }}
+                <p>{{ evento.descricao }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="mt-5">Cadastrar Novo Evento</h2>
+    <form method="POST" action="/eventos">
+        <div class="form-group">
+            <label for="titulo">Título</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" required>
+        </div>
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="data_evento">Data</label>
+            <input type="date" class="form-control" id="data_evento" name="data_evento" required>
+        </div>
+        <button type="submit" class="btn btn-success">Cadastrar Evento</button>
+    </form>
+</div>
+{% endblock %}
