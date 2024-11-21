@@ -32,6 +32,9 @@ class Evento(db.Model):
     data_evento = db.column(db.Date, nullabel=False) 
     usuario_id = db.column(db.Integer, db.ForeignKey('usuario.id'), nullabel=False)
     
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
 
 @app.route('/')
 def hello():
@@ -41,17 +44,41 @@ def hello():
 def sobre():
     return render_template('sobre.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
-
-@app.route('/register', methods=['Get', 'Post'])
-def register():
-    if request.method == 'Post':
-        nome = request.form.get('nome')
+    if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
+
+        usuario = Usuario.query.filter_by(email = email).first()
+
+        if usuario and bcrypt.check_password_hash(usuario.senha, senha):
+            login_user(usuario)
+            return redirect(url_for('eventos'))
+        else: 
+            flash('Login inválido. Verifique suas credenciais.')
+
+    return render_template('login.html')
+
+@app.route('logout')
+@login_required
+def logout(): 
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        email = request.form.get('email')
+        senha = bcrypt.generate_password_hash(request.form.get('senha')).decode('utf-8')
         novo_usuario = Usuario(nome = nome, email = email, senha = senha)
+
+        db.session.add(novo_usuario)
+        db.session.commit()
+        flash('Cadastro realizado com sucesso! Faça seu login.')
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
 if __name__ == '__main__':
