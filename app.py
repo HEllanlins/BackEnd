@@ -20,17 +20,17 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class Usuario(db.Model, UserMixin):
-    id = db.column(db.Integer, primary_key=True) 
+    id = db.Column(db.Integer, primary_key=True) 
     nome = db.Column(db.String(100), nullable=False) 
-    email = db.Column(db.Sftring(100), nullable=False) 
-    senha = db.Column(db.Sftring(50), nullable=False) 
+    email = db.Column(db.String(100), nullable=False) 
+    senha = db.Column(db.String(50), nullable=False) 
 
 class Evento(db.Model):
-    id = db.column(db.Integer, primary_key=True) 
-    titulo = db.column(db.String(100), nullabel=False) 
-    descricao = db.column(db.Text, nullabel=False)
-    data_evento = db.column(db.Date, nullabel=False) 
-    usuario_id = db.column(db.Integer, db.ForeignKey('usuario.id'), nullabel=False)
+    id = db.Column(db.Integer, primary_key=True) 
+    titulo = db.Column(db.String(100), nullable=False) 
+    descricao = db.Column(db.Text, nullable=False)
+    data_evento = db.Column(db.Date, nullable=False) 
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     
 @login_manager.user_loader
 def load_user(user_id):
@@ -60,7 +60,7 @@ def login():
 
     return render_template('login.html')
 
-@app.route('logout')
+@app.route('/logout')
 @login_required
 def logout(): 
     logout_user()
