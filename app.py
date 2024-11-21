@@ -51,6 +51,7 @@ def register():
         nome = request.form.get('nome')
         email = request.form.get('email')
         senha = request.form.get('senha')
+        novo_usuario = Usuario(nome = nome, email = email, senha = senha)
     return render_template('register.html')
 
 if __name__ == '__main__':
