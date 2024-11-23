@@ -3,14 +3,14 @@
 {% block content %} 
     <div class="login-container">
         <h2 class="text-center">Login</h2>
-        <form>
+        <form method="POST" action="/login">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu email">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Digite seu email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite sua senha">
+                <input type="password" class="form-control" id="password" name="senha" placeholder="Digite sua senha">
             </div>
             <div class="d-grid">
                 <button type="submit" class="btn btn-success">Entrar</button>
