@@ -13,6 +13,11 @@ agenda.html
             <li class="list-group-item">
                 <strong>{{ evento.titulo }}</strong> - {{ evento.data_evento.strftime('%d/%m/%Y') }}
                 <p>{{ evento.descricao }}</p>
+                <a href="{{ url_for('editar_evento', evento_id=evento.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                <!-- Botão para excluir evento -->
+                <form action="{{ url_for('excluir_evento', evento_id=evento.id) }}" method="POST" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza de que deseja excluir este evento?')">Excluir</button>
+                </form>
             </li>
         {% else %}
             <li class="list-group-item">Nenhum evento futuro encontrado.</li>

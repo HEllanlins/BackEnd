@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Evento</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="titulo">Título</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" value="{{ evento.titulo }}" required>
+        </div>
+        <div class="form-group">
+            <label for="data_evento">Data do Evento</label>
+            <input type="date" class="form-control" id="data_evento" name="data_evento" value="{{ evento.data_evento.strftime('%Y-%m-%d') }}" required>
+        </div>
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea class="form-control" id="descricao" name="descricao" required>{{ evento.descricao }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <a href="{{ url_for('agendas') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

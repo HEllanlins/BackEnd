@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Excluir Evento</h2>
+    <p>Tem certeza que deseja excluir o evento "{{ evento.titulo }}"?</p>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <input type="submit" value="Excluir" class="btn btn-danger">
+        <a href="{{ url_for('agendas') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+    {% if evento %}
+        {% else %}
+        <p>Evento não encontrado.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

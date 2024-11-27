@@ -111,6 +111,64 @@ def eventos():
 
     return render_template('eventos.html', eventos=eventos)
 
+# Rota para editar um evento
+@app.route('/editar_evento/<int:evento_id>', methods=['GET', 'POST'])
+def editar_evento(evento_id):
+    evento = Evento.query.get_or_404(evento_id)
+
+    if request.method == 'POST':
+        # Debugging: Imprimir o que está sendo enviado no formulário
+        print(request.form)
+
+        # Atualizando os dados do evento
+        evento.titulo = request.form.get('titulo')
+        
+        # Convertendo a string de data para um objeto datetime
+        data_evento_str = request.form.get('data_evento')
+        if data_evento_str:
+            evento.data_evento = datetime.strptime(data_evento_str, '%Y-%m-%d')
+        
+        evento.descricao = request.form.get('descricao')
+
+        # Tentativa de commit das mudanças
+        try:
+            print("Título:", evento.titulo)
+            print("Data do Evento:", evento.data_evento)
+            print("Descrição:", evento.descricao)
+            db.session.commit()
+            flash('Evento atualizado com sucesso!', 'success')
+            return redirect(url_for('agendas'))
+        except Exception as e:
+            db.session.rollback()  # Reverte a sessão em caso de erro
+            flash('Ocorreu um erro ao atualizar o evento: {}'.format(e), 'danger')
+            return redirect(url_for('agendas'))
+
+    return render_template('editar_evento.html', evento=evento)
+
+# Rota para excluir um evento
+@app.route('/excluir_evento/<int:evento_id>', methods=['POST'])
+@login_required
+def excluir_evento(evento_id):
+    # Buscar o evento pelo ID
+    evento = Evento.query.get_or_404(evento_id)
+
+    # Verificar se o evento pertence ao usuário logado
+    if evento.usuario_id == current_user.id:
+        try:
+            # Excluir o evento
+            db.session.delete(evento)
+            db.session.commit()
+            flash('Evento excluído com sucesso!', 'success')
+        except Exception as e:
+            db.session.rollback()  # Reverte a sessão em caso de erro
+            flash(f'Ocorreu um erro ao excluir o evento: {e}', 'danger')
+    else:
+        flash('Você não tem permissão para excluir este evento.', 'danger')
+
+    # Redirecionar para a agenda
+    return redirect(url_for('agendas'))
+
+# Rota da agenda
 @app.route('/agenda')
 def agendas():
     # Obter a data atual para filtrar os eventos
